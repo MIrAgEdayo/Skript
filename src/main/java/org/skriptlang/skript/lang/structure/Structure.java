@@ -28,6 +28,7 @@ import ch.njol.skript.log.ParseLogHandler;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.util.Kleenean;
 import ch.njol.util.coll.iterator.ConsumingIterator;
+import org.bukkit.Bukkit;
 import org.eclipse.jdt.annotation.Nullable;
 import org.jetbrains.annotations.NotNull;
 import org.skriptlang.skript.lang.entry.EntryContainer;
@@ -36,6 +37,7 @@ import org.skriptlang.skript.lang.entry.EntryValidator;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.logging.Level;
 
 /**
  * Structures are the root elements in every script. They are essentially the "headers".
@@ -181,6 +183,12 @@ public abstract class Structure implements SyntaxElement, Debuggable {
 			Structure structure = SkriptParser.parseStatic(expr, iterator, ParseContext.EVENT, defaultError);
 			if (structure != null) {
 				parseLogHandler.printLog();
+				//Bukkit.getLogger().log(Level.INFO, "");
+				//Bukkit.getLogger().log(Level.INFO, "=============START=============");
+				//Bukkit.getLogger().log(Level.INFO, structure.toString()); //イベント名みたいな
+				//Bukkit.getLogger().log(Level.INFO, expr); //イベント名(structureのコロン除く1行目全体)
+				//Bukkit.getLogger().log(Level.INFO, iterator.toString()); //iteratorのインスタンス名出ただけ
+				//Bukkit.getLogger().log(Level.INFO, "=============END=============");
 				return structure;
 			}
 			parseLogHandler.printError();

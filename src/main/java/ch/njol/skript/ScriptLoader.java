@@ -55,6 +55,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Supplier;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -625,6 +626,15 @@ public class ScriptLoader {
 
 					SectionNode node = ((SectionNode) cnode);
 					String line = node.getKey();
+					//Bukkit.getLogger().log(Level.INFO, "");
+					//Bukkit.getLogger().log(Level.INFO, "=============START=============");
+					//Bukkit.getLogger().log(Level.INFO, line); //イベント名(structureのコロン除く1行目全体)
+					//Bukkit.getLogger().log(Level.INFO, node.getValue(node.getKey())); //null
+					//Bukkit.getLogger().log(Level.INFO, script.getEvents().toString()); //empty
+					//Bukkit.getLogger().log(Level.INFO, String.valueOf(node.getLine())); //イベントが記述されている行数
+					//Bukkit.getLogger().log(Level.INFO, List.of(node).toString()); //[on load: (test.sk, line 1)]みたいな
+					//Bukkit.getLogger().log(Level.INFO, script.getConfig().getFileName()); //ファイル名
+					//Bukkit.getLogger().log(Level.INFO, "=============END=============");
 					if (line == null)
 						continue;
 
@@ -922,6 +932,20 @@ public class ScriptLoader {
 			if (subNodeKey == null)
 				throw new IllegalArgumentException("Encountered node with null key: '" + subNode + "'");
 			String expr = replaceOptions(subNodeKey);
+
+			/*
+			Bukkit.getLogger().log(Level.INFO, "");
+			Bukkit.getLogger().log(Level.INFO, "=============START=============");
+			Bukkit.getLogger().log(Level.INFO, subNode.toString()); //set the join message to "aaa" (test.sk, line 11)
+			Bukkit.getLogger().log(Level.INFO, subNode.getConfig().getFileName()); //ファイル名
+			Bukkit.getLogger().log(Level.INFO, String.valueOf(subNode.getLine())); //コードが書かれている行
+			Bukkit.getLogger().log(Level.INFO, subNode.getParent().getKey()); //1ネスト上のノード
+			Bukkit.getLogger().log(Level.INFO, subNodeKey); //現在処理中のノード
+			Bukkit.getLogger().log(Level.INFO, expr); //subNodeKeyに同じ
+			Bukkit.getLogger().log(Level.INFO, "=============END=============");
+
+			 */
+
 			if (!SkriptParser.validateLine(expr))
 				continue;
 

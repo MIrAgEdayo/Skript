@@ -22,9 +22,11 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.lang.function.EffFunctionCall;
 import ch.njol.skript.log.ParseLogHandler;
 import ch.njol.skript.log.SkriptLogger;
+import org.bukkit.Bukkit;
 import org.eclipse.jdt.annotation.Nullable;
 
 import java.util.Iterator;
+import java.util.logging.Level;
 
 /**
  * Supertype of conditions and effects
@@ -38,6 +40,9 @@ public abstract class Statement extends TriggerItem implements SyntaxElement {
 	@Nullable
 	public static Statement parse(String s, String defaultError) {
 		ParseLogHandler log = SkriptLogger.startParseLogHandler();
+		Bukkit.getLogger().log(Level.INFO, "");
+		Bukkit.getLogger().log(Level.INFO, s);
+		Bukkit.getLogger().log(Level.INFO, "");
 		try {
 			EffFunctionCall f = EffFunctionCall.parse(s);
 			if (f != null) {
@@ -52,6 +57,12 @@ public abstract class Statement extends TriggerItem implements SyntaxElement {
 			EffectSection section = EffectSection.parse(s, null, null, null);
 			if (section != null) {
 				log.printLog();
+				/*
+				Bukkit.getLogger().log(Level.INFO, "sectionToString: " + section);
+				Bukkit.getLogger().log(Level.INFO, "sectionIndentToString: " + section.getIndentation());
+				Bukkit.getLogger().log(Level.INFO, "sectionParentToString: " + section.getParent());
+				sectionはnullらしい
+				 */
 				return new EffectSectionEffect(section);
 			}
 			log.clear();
@@ -59,6 +70,11 @@ public abstract class Statement extends TriggerItem implements SyntaxElement {
 			Statement statement = (Statement) SkriptParser.parse(s, (Iterator) Skript.getStatements().iterator(), defaultError);
 			if (statement != null) {
 				log.printLog();
+				/*
+				Bukkit.getLogger().log(Level.INFO, "statementToString: " + statement); //処理中のノード
+				Bukkit.getLogger().log(Level.INFO, "statementIndentToString: " + statement.getIndentation()); //empty
+				Bukkit.getLogger().log(Level.INFO, "statementParentToString: " + statement.getParent()); //null
+				 */
 				return statement;
 			}
 
